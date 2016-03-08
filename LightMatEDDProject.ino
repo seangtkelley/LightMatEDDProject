@@ -1,29 +1,34 @@
-int ledPin = 2;
+int ledPin[] = {2,3,4};
 
-void setup() {
-  // put your setup code here, to run once:
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
+void setup()
+{
+  for (int i =0;i<3;i++)
+  {
+    pinMode(ledPin[i], OUTPUT);
+  }
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  if(ledPin == 2){
-    digitalWrite(9, LOW);
-  } else {
-    digitalWrite(ledPin-1, LOW);
+void loop() 
+{
+  for (byte counter =0;counter<=7; counter++)
+  {
+    displayBinary(counter);
+    delay(500); 
   }
-  digitalWrite(ledPin, HIGH);
-  if(ledPin == 9){
-    ledPin = 2;
-  } else {
-    ledPin += 1;
+}
+
+void displayBinary(byte numToShow)
+{
+  for (int i =0;i<3;i++)
+  {
+    if (bitRead(numToShow, i)==1)
+    {
+      digitalWrite(ledPin[i], HIGH); 
+    }
+    else
+    {
+      digitalWrite(ledPin[i], LOW); 
+    }
   }
-  delay(1000);
+
 }
