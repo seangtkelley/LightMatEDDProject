@@ -1,12 +1,13 @@
-int inputPins[]  = {1,2,3,4};
-int outputPins[] = {5,6,7,8};
+int inputPins[]  = {1,2,3};
+int outputPins[] = {4,5,6};
+int powerPins[]  = {7,8,9};
 
 int inputRows = 3;
 int inputColumns = 3;
 int inputGrid[][];
 
-int outputRows = 4;
-int outputColumns = 4;
+int outputRows = 3;
+int outputColumns = 3;
 
 void setup() {
   for (int i =0; i < (sizeof(inputPins)/sizeof(int)); i++){
@@ -21,18 +22,22 @@ void loop() {
   // check inputs
   for (int i = 1; i < inputColumns; i++){
     // send power to column
-    for (int j = 0; j < (sizeof(inputPins)/sizeof(int)); j++){
+    for (int j = 0; j < (sizeof(outputPins)/sizeof(int)); j++){
       if (bitRead(i, j) == 1){
-        digitalWrite(inputPins[j], HIGH); 
+        digitalWrite(outputPins[j], HIGH);
       } else {
-        digitalWrite(outputPins[j], LOW); 
+        digitalWrite(outputPins[j], LOW);
       }
     }
+
     // check input ports
+    for (int j = 0; j < (sizeof(inputPins)/sizeof(int)); j++){
+      inputGrid[i][j] = digitalRead(inputPins[j]);;
+    }
 
     // write to input grid
   }
-  
+
   // send outputs
   for (int i =0; i < outputColumns; i++){
     // send power to column
