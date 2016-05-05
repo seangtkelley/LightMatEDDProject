@@ -1,5 +1,5 @@
 int btnPowerPins = {6,7,8};     // pins to power rows of buttons
-int btnInputPins = {9,10,11};   // pins to revieve input from buttons
+int btnInputPins = {9,10,11};   // pins to revieve input from columns of buttons
 int powerMux[] = {2,3};         // pins to power rows of LEDs
 int gndMux[] = {4,5};           // pins to ground columns of LEDs
 
@@ -24,7 +24,7 @@ void setup() {
 
 void loop() {
   // check inputs
-  for (int i = 0; i < inputColumns - 1; i++){
+  for (int i = 0; i < inputRows - 1; i++){
     // send power to column
     digitalWrite(btnPowerPins[i], HIGH);
 
@@ -37,6 +37,7 @@ void loop() {
   // send outputs
   for (int i =0; i < inputColumns - 1; i++){
     // power column
+    // MAKE THIS A FUNCTION
     for (int j = 0; j < (sizeof(powerPins)/sizeof(int)); j++){
       if (bitRead(i, j)==1){
         digitalWrite(powerPins[j], HIGH);
@@ -49,6 +50,7 @@ void loop() {
     for (int j = 0; j < inputRows - 1; j++){
       if(inputGrid[i][j] == HIGH){
         // close circuit
+        // MAKE THIS A FUNCTION
         for (int j = 0; j < (sizeof(powerPins)/sizeof(int)); j++){
           if (bitRead(i, j)==1){
             digitalWrite(powerPins[j], HIGH);
