@@ -1,12 +1,12 @@
-int btnPowerPins = {6,7,8};     // pins to power rows of buttons
-int btnInputPins = {9,10,11};   // pins to revieve input from columns of buttons
+int btnPowerPins[] = {6,7,8};     // pins to power rows of buttons
+int btnInputPins[] = {9,10,11};   // pins to revieve input from columns of buttons
 int pwrMux[] = {2,3};           // pins to power rows of LEDs
 int gndMux[] = {4,5};           // pins to ground columns of LEDs
 int nullState = 12;             // pin to write when no leds should be powered
 
 int inputRows = 3;
 int inputCols = 3;
-int inputGrid[][];
+int inputGrid[3][3]; // make sure bound are the same as preceeding variables
 
 int ledRows = 4;
 int ledCols = 4;
@@ -18,7 +18,7 @@ void setup() {
   for (int i =0; i < (sizeof(btnPowerPins)/sizeof(int)); i++){
     pinMode(btnPowerPins[i], OUTPUT);
   }
-  for (int i =0; i < (sizeof(powerMux)/sizeof(int)); i++){
+  for (int i =0; i < (sizeof(pwrMux)/sizeof(int)); i++){
     pinMode(pwrMux[i], OUTPUT);
   }
   for (int i =0; i < (sizeof(gndMux)/sizeof(int)); i++){
@@ -29,8 +29,10 @@ void setup() {
 void loop() {
   // check inputs
   for (int row = 0; row < inputRows; row++){
-    // send power to column
-    digitalWrite(btnPowerPins[i], HIGH);
+    // send power to row
+    digitalWrite(btnPowerPins[row], HIGH);
+
+    delay(10);
 
     // write to input grid
     inputGrid[row][0] = digitalRead(btnInputPins[0]);
@@ -66,9 +68,9 @@ void loop() {
 }
 
 void clearLeds(){
-  // write LOW to both pwrMux pins
-  pwrRow(0);
-  // write HIGH to nullState pin so that nothing is getting powered
+  // write 8 to mux
+  digitalWrite(pwrMux[0], HIGH);
+  digitalWrite(pwrMux[1], HIGH);
   digitalWrite(nullState, HIGH);
 }
 
@@ -80,26 +82,54 @@ void ledOn(int row, int col){
 
 // write binary form of row to pwrMux pins
 void pwrRow(int row){
+  // convert int to bin on pins
+  if(row == 0){
+    digitalWrite(pwrMux[0], LOW);
+    digitalWrite(pwrMux[1], LOW);
+  } else if(row == 1){
+    digitalWrite(pwrMux[0], HIGH);
+    digitalWrite(pwrMux[1], LOW);
+  } else if(row == 2){
+    digitalWrite(pwrMux[0], LOW);
+    digitalWrite(pwrMux[1], HIGH);
+  } else if(row == 3){
+    digitalWrite(pwrMux[0], HIGH);
+    digitalWrite(pwrMux[1], HIGH);
+  }
   // loop through pins
-  for (int j = 0; j < (sizeof(pwrMux)/sizeof(int)); j++){
+  /*for (int j = 0; j < (sizeof(pwrMux)/sizeof(int)); j++){
     // check if pin index j has a 1 in the binary number for int row
     if (bitRead(row, j)==1){
       digitalWrite(pwrMux[j], HIGH);
     } else {
       digitalWrite(pwrMux[j], LOW);
     }
-  }
+  }*/
 }
 
 // write binary form of col to gndMux pins
 void gndCol(int col){
-    // loop through pins
-    for (int j = 0; j < (sizeof(gndMux)/sizeof(int)); j++){
-      // check if pin index j has a 1 in the binary number for int row
-      if (bitRead(col, j)==1){
-        digitalWrite(gndMux[j], HIGH);
-      } else {
-        digitalWrite(gndMux[j], LOW);
-      }
+  // convert int to bin on pins
+  if(col == 0){
+    digitalWrite(gndMux[0], LOW);
+    digitalWrite(gndMux[1], LOW);
+  } else if(col == 1){
+    digitalWrite(gndMux[0], HIGH);
+    digitalWrite(gndMux[1], LOW);
+  } else if(col == 2){
+    digitalWrite(gndMux[0], LOW);
+    digitalWrite(gndMux[1], HIGH);
+  } else if(col == 3){
+    digitalWrite(gndMux[0], HIGH);
+    digitalWrite(gndMux[1], HIGH);
+  }
+  // loop through pins
+  /*for (int j = 0; j < (sizeof(gndMux)/sizeof(int)); j++){
+    // check if pin index j has a 1 in the binary number for int row
+    if (bitRead(col, j)==1){
+      digitalWrite(gndMux[j], HIGH);
+    } else {
+      digitalWrite(gndMux[j], LOW);
     }
+  }*/
 }
