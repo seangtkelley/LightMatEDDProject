@@ -13,7 +13,7 @@ int ledCols = 4;
 
 void setup() {
   for (int i =0; i < (sizeof(btnInputPins)/sizeof(int)); i++){
-    pinMode(btnInputPins[i], INPUT);
+    pinMode(btnInputPins[i], INPUT_PULLUP);
   }
   for (int i =0; i < (sizeof(btnPowerPins)/sizeof(int)); i++){
     pinMode(btnPowerPins[i], OUTPUT);
@@ -30,9 +30,9 @@ void loop() {
   // check inputs
   for (int row = 0; row < inputRows; row++){
     // send power to row
-    digitalWrite(btnPowerPins[row], HIGH);
+    digitalWrite(btnPowerPins[row], LOW);
 
-    delay(10);
+    delay(1);
 
     // write to input grid
     inputGrid[row][0] = digitalRead(btnInputPins[0]);
@@ -41,28 +41,31 @@ void loop() {
   }
 
   // send outputs
-  // loop through rows and columns
   for(int row = 0; row < ledRows; row++){
     for(int col = 0; col < ledCols; col++){
       // turn off all leds
       clearLeds();
       if(row-1 != -1 && col-1 != -1){ // check if the button on the top left of the led exists
-        if(inputGrid[row-1][col-1] == HIGH){ // check if that button is pressed
+        if(inputGrid[row-1][col-1] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
-      } else if(row-1 != -1 && !(col >= inputCols)) { // check if the button on the top right of the led exists
-         if(inputGrid[row-1][col] == HIGH){ // check if that button is pressed
+      }
+      if(row-1 != -1 && !(col >= inputCols)) { // check if the button on the top right of the led exists
+         if(inputGrid[row-1][col] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
-      } else if(!(row >= inputRows) && col-1 != -1) { // check if the button on the bottom left of the led exists
-         if(inputGrid[row][col-1] == HIGH){ // check if that button is pressed
+      }
+      if(!(row >= inputRows) && col-1 != -1) { // check if the button on the bottom left of the led exists
+         if(inputGrid[row][col-1] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
-      } else if(!(row >= inputRows) && !(col >= inputCols)) { // check if the button on the bottom right of the led exists
-         if(inputGrid[row][col] == HIGH){ // check if that button is pressed
+      }
+      if(!(row >= inputRows) && !(col >= inputCols)) { // check if the button on the bottom right of the led exists
+         if(inputGrid[row][col] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
       } 
+      delay(1);
     }
   }
 }

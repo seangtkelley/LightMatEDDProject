@@ -29,7 +29,7 @@ void setup() {
     pinMode(gndMux[i], OUTPUT);
   }
 
-   //Serial.begin(9600);
+   Serial.begin(9600);
 }
 
 int t = 250;
@@ -39,11 +39,11 @@ void loop() {
    * INPUT TESTING
    */
     
-   /*for (int row = 0; row < inputRows; row++){
+   for (int row = 0; row < inputRows; row++){
     // reset power pins
-    digitalWrite(btnPowerPins[0], LOW);
-    digitalWrite(btnPowerPins[1], LOW);
-    digitalWrite(btnPowerPins[2], LOW);
+    //digitalWrite(btnPowerPins[0], LOW);
+    //digitalWrite(btnPowerPins[1], LOW);
+    //digitalWrite(btnPowerPins[2], LOW);
     
     // send power to row
     digitalWrite(btnPowerPins[row], HIGH);
@@ -54,67 +54,73 @@ void loop() {
     inputGrid[row][0] = digitalRead(btnInputPins[0]);
     inputGrid[row][1] = digitalRead(btnInputPins[1]);
     inputGrid[row][2] = digitalRead(btnInputPins[2]);
-  }*/
+  }
 
-  inputGrid[0][0] = LOW;
-  inputGrid[0][1] = LOW;
-  inputGrid[0][2] = LOW;
-  inputGrid[1][0] = LOW;
-  inputGrid[1][1] = LOW;
-  inputGrid[1][2] = HIGH;
-  inputGrid[2][0] = LOW;
-  inputGrid[2][1] = LOW;
-  inputGrid[2][2] = LOW;
+  Serial.println("|" + String(inputGrid[0][0]) + " " + String(inputGrid[0][1]) + " " + String(inputGrid[0][2]) + "|");
+  Serial.println("|" + String(inputGrid[1][0]) + " " + String(inputGrid[1][1]) + " " + String(inputGrid[1][2]) + "|");
+  Serial.println("|" + String(inputGrid[2][0]) + " " + String(inputGrid[2][1]) + " " + String(inputGrid[2][2]) + "|");
+  Serial.println();
+  while(Serial.available() == 0){}
+  Serial.read();
 
-  for(int row = 0; row < ledRows; row++){
+  /*inputGrid[0][0] = HIGH;
+  inputGrid[0][1] = HIGH;
+  inputGrid[0][2] = HIGH;
+  inputGrid[1][0] = HIGH;
+  inputGrid[1][1] = HIGH;
+  inputGrid[1][2] = LOW;
+  inputGrid[2][0] = HIGH;
+  inputGrid[2][1] = HIGH;
+  inputGrid[2][2] = HIGH;*/
+
+  /*for(int row = 0; row < ledRows; row++){
     for(int col = 0; col < ledCols; col++){
       // turn off all leds
       //clearLeds();
       if(row-1 != -1 && col-1 != -1){ // check if the button on the top left of the led exists
-        if(inputGrid[row-1][col-1] == HIGH){ // check if that button is pressed
+        if(inputGrid[row-1][col-1] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
-      } else if(row-1 != -1 && !(col >= inputCols)) { // check if the button on the top right of the led exists
-         if(inputGrid[row-1][col] == HIGH){ // check if that button is pressed
+      }
+      if(row-1 != -1 && !(col >= inputCols)) { // check if the button on the top right of the led exists
+         if(inputGrid[row-1][col] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
-      } else if(!(row >= inputRows) && col-1 != -1) { // check if the button on the bottom left of the led exists
-         if(inputGrid[row][col-1] == HIGH){ // check if that button is pressed
+      }
+      if(!(row >= inputRows) && col-1 != -1) { // check if the button on the bottom left of the led exists
+         if(inputGrid[row][col-1] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
-      } else if(!(row >= inputRows) && !(col >= inputCols)) { // check if the button on the bottom right of the led exists
-         if(inputGrid[row][col] == HIGH){ // check if that button is pressed
+      }
+      if(!(row >= inputRows) && !(col >= inputCols)) { // check if the button on the bottom right of the led exists
+         if(inputGrid[row][col] == LOW){ // check if that button is pressed
           ledOn(row, col);
         }
       } 
       delay(1);
     }
-  }
-  /*
-  for(int row = 0; row < inputRows; row++){
+  }*/
+  
+  /*for(int row = 0; row < inputRows; row++){
     for(int col = 0; col < inputCols; col++){
       // turn off all leds
-      if(inputGrid[row][col] == HIGH){ // check if that button is pressed
-        if(row-1 != -1 && col-1 != -1){ // check if the button on the top left of the led exists
-          ledOn(row-1, col-1);
-        } else if(row-1 != -1 && !(col >= ledCols)) { // check if the button on the top right of the led exists
-          ledOn(row-1, col);
-        } else if(!(row >= ledRows) && col-1 != -1) { // check if the button on the bottom left of the led exists
-          ledOn(row, col-1);
-        } else if(!(row >= ledRows) && !(col >= ledRows)) { // check if the button on the bottom right of the led exists
-          ledOn(row, col);
-        } 
+      if(inputGrid[row][col] == LOW){ // check if that button is pressed
+        if(!(row >= ledRows) && !(col >= ledCols)){
+            ledOn(row, col);
+        }
+        if(!(row+1 >= ledRows) && !(col >= ledCols)){
+            ledOn(row+1, col);
+        }
+        if(!(row >= ledRows) && !(col+1 >= ledCols)){
+            ledOn(row, col+1);
+        }
+        if(!(row+1 >= ledRows) && !(col+1 >= ledCols)){
+            ledOn(row+1, col+1);
+        }
         delay(1);
       }
     }
-  }*/
-
-  ///Serial.println("|" + String(inputGrid[0][0]) + " " + String(inputGrid[0][1]) + " " + String(inputGrid[0][2]) + "|");
-  //Serial.println("|" + String(inputGrid[1][0]) + " " + String(inputGrid[1][1]) + " " + String(inputGrid[1][2]) + "|");
-  //Serial.println("|" + String(inputGrid[2][0]) + " " + String(inputGrid[2][1]) + " " + String(inputGrid[2][2]) + "|");
-  //Serial.println();
-  //while(Serial.available() == 0){}
-  //Serial.read();
+  }**/
   
   /*Serial.println("Row: ");
   while(Serial.available() == 0){}
