@@ -11,6 +11,8 @@ int inputGrid[3][3]; // make sure bound are the same as preceeding variables
 int ledRows = 4;
 int ledCols = 4;
 
+bool hasInput = false;
+
 void setup() {
   for (int i =0; i < (sizeof(btnInputPins)/sizeof(int)); i++){
     pinMode(btnInputPins[i], INPUT_PULLUP);
@@ -24,10 +26,12 @@ void setup() {
   for (int i =0; i < (sizeof(gndMux)/sizeof(int)); i++){
     pinMode(gndMux[i], OUTPUT);
   }
+  pinMode(nullState, OUTPUT);
 }
 
 void loop() {
   // check inputs
+  hasInput = false;
   for (int row = 0; row < inputRows; row++){
     // reset power pins
     digitalWrite(btnPowerPins[0], HIGH);
@@ -38,41 +42,51 @@ void loop() {
     digitalWrite(btnPowerPins[row], LOW);
 
     //delay(1);
-
+    
     // write to input grid
     for (int j = (sizeof(btnInputPins)/sizeof(int))-1; j >= 0; j--){
       //row = row + 
       inputGrid[j][row] = digitalRead(btnInputPins[j]);
+      if(inputGrid[j][row] == LOW){
+        hasInput = true;
+      }
     }
   }
 
   // send outputs
-  for(int row = 0; row < ledRows; row++){
-    for(int col = 0; col < ledCols; col++){
-      // turn off all leds
-      clearLeds();
-      if(row-1 != -1 && col-1 != -1){ // check if the button on the top left of the led exists
-        if(inputGrid[row-1][col-1] == LOW){ // check if that button is pressed
-          ledOn(row, col);
+  if(hasInput == true){
+    // clear nullState
+    digitalWrite(nullState, LOW);
+    
+    for(int row = 0; row < ledRows; row++){
+      for(int col = 0; col < ledCols; col++){
+        // turn off all leds
+        //clearLeds();
+        if(row-1 != -1 && col-1 != -1){ // check if the button on the top left of the led exists
+          if(inputGrid[row-1][col-1] == LOW){ // check if that button is pressed
+            ledOn(row, col);
+          }
         }
+        if(row-1 != -1 && !(col >= inputCols)) { // check if the button on the top right of the led exists
+           if(inputGrid[row-1][col] == LOW){ // check if that button is pressed
+            ledOn(row, col);
+          }
+        }
+        if(!(row >= inputRows) && col-1 != -1) { // check if the button on the bottom left of the led exists
+           if(inputGrid[row][col-1] == LOW){ // check if that button is pressed
+            ledOn(row, col);
+          }
+        }
+        if(!(row >= inputRows) && !(col >= inputCols)) { // check if the button on the bottom right of the led exists
+           if(inputGrid[row][col] == LOW){ // check if that button is pressed
+            ledOn(row, col);
+          }
+        } 
+        delay(1);
       }
-      if(row-1 != -1 && !(col >= inputCols)) { // check if the button on the top right of the led exists
-         if(inputGrid[row-1][col] == LOW){ // check if that button is pressed
-          ledOn(row, col);
-        }
-      }
-      if(!(row >= inputRows) && col-1 != -1) { // check if the button on the bottom left of the led exists
-         if(inputGrid[row][col-1] == LOW){ // check if that button is pressed
-          ledOn(row, col);
-        }
-      }
-      if(!(row >= inputRows) && !(col >= inputCols)) { // check if the button on the bottom right of the led exists
-         if(inputGrid[row][col] == LOW){ // check if that button is pressed
-          ledOn(row, col);
-        }
-      } 
-      delay(1);
     }
+  } else {
+    digitalWrite(nullState, HIGH);  
   }
 }
 
