@@ -1,5 +1,5 @@
-int btnPowerPins[] = {6,7,8};     // pins to power rows of buttons
-int btnInputPins[] = {9,10,11};   // pins to revieve input from columns of buttons
+int btnInputPins[] = {6,7,8};     // pins to power rows of buttons
+int btnPowerPins[] = {9,10,11};   // pins to revieve input from columns of buttons
 int pwrMux[] = {2,3};           // pins to power rows of LEDs
 int gndMux[] = {4,5};           // pins to ground columns of LEDs
 int nullState = 12;             // pin to write when no leds should be powered
@@ -17,7 +17,7 @@ int inputRowCounter = -1;
 
 void setup() {
   for (int i =0; i < (sizeof(btnInputPins)/sizeof(int)); i++){
-    pinMode(btnInputPins[i], INPUT);
+    pinMode(btnInputPins[i], INPUT_PULLUP);
   }
   for (int i =0; i < (sizeof(btnPowerPins)/sizeof(int)); i++){
     pinMode(btnPowerPins[i], OUTPUT);
@@ -38,22 +38,22 @@ void loop() {
   /*
    * INPUT TESTING
    */
-    
+   
    for (int row = 0; row < inputRows; row++){
     // reset power pins
-    //digitalWrite(btnPowerPins[0], LOW);
-    //digitalWrite(btnPowerPins[1], LOW);
-    //digitalWrite(btnPowerPins[2], LOW);
+    digitalWrite(btnPowerPins[0], HIGH);
+    digitalWrite(btnPowerPins[1], HIGH);
+    digitalWrite(btnPowerPins[2], HIGH);
     
     // send power to row
-    digitalWrite(btnPowerPins[row], HIGH);
+    digitalWrite(btnPowerPins[row], LOW);
 
     //delay(1);
 
     // write to input grid
-    inputGrid[row][0] = digitalRead(btnInputPins[0]);
-    inputGrid[row][1] = digitalRead(btnInputPins[1]);
-    inputGrid[row][2] = digitalRead(btnInputPins[2]);
+    for (int j = (sizeof(btnInputPins)/sizeof(int)); j >= 0 ; j--){
+      inputGrid[row][j] = digitalRead(btnInputPins[j]);
+    }
   }
 
   Serial.println("|" + String(inputGrid[0][0]) + " " + String(inputGrid[0][1]) + " " + String(inputGrid[0][2]) + "|");
@@ -171,6 +171,8 @@ void loop() {
   Serial.println("Turning on (" + String(r) + "," + String(c) + ")");
   ledOn(r, c);*/
 
+  //ledOn(1,1);
+
   
   /*for(int row = 0; row < ledRows; row++){
     for(int col = 0; col < ledCols; col++){
@@ -179,10 +181,7 @@ void loop() {
       //Serial.println("Turning on (" + String(row) + "," + String(col) + ")");
       //while(Serial.available() == 0){}
       //Serial.read();
-      delay(t);
-      if(t != 1){
-        t -= 1;
-      }
+      delay(250);
     }
   }*/
 
