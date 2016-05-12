@@ -39,7 +39,7 @@ void loop() {
    * INPUT TESTING
    */
    
-   for (int row = 0; row < inputRows; row++){
+   /*for (int row = 0; row < inputRows; row++){
     // reset power pins
     digitalWrite(btnPowerPins[0], HIGH);
     digitalWrite(btnPowerPins[1], HIGH);
@@ -61,7 +61,7 @@ void loop() {
   Serial.println("|" + String(inputGrid[2][0]) + " " + String(inputGrid[2][1]) + " " + String(inputGrid[2][2]) + "|");
   Serial.println();
   while(Serial.available() == 0){}
-  Serial.read();
+  Serial.read();*/
 
   /*inputGrid[0][0] = HIGH;
   inputGrid[0][1] = HIGH;
@@ -174,7 +174,7 @@ void loop() {
   //ledOn(1,1);
 
   
-  /*for(int row = 0; row < ledRows; row++){
+  for(int row = 0; row < ledRows; row++){
     for(int col = 0; col < ledCols; col++){
       //clearLeds();    
       ledOn(row, col);
@@ -183,7 +183,7 @@ void loop() {
       //Serial.read();
       delay(250);
     }
-  }*/
+  }
 
   /*digitalWrite(2, HIGH);
   digitalWrite(3, HIGH);
