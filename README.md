@@ -1,5 +1,6 @@
-# Light Mat Project
-### Engineering Design and Development
-#### Pinkerton Academy
+# Illumistep
+### Engineering Design and Development 2015 - Pinkerton Academy
 ---
-This repository contains all code for the Arduino controlling our light mat.
+A new innovation in floormats: lighting based on where you step. Great for night hallway lighting or teaching children motor skills.
+
+### [Poster Presentation](https://drive.google.com/file/d/0B6o5YtWKk8UMdlRnMGtmSkUtRjQ/view?usp=sharing)
